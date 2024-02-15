@@ -11,6 +11,11 @@ Globals:
     Timeout: 3
 
 Resources:
+  UserPool:
+    Type: "AWS::Cognito::UserPool"
+    Properties:
+      UsernameAttributes:
+        - email
   PlantFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -62,7 +67,10 @@ Outputs:
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   HelloWorldApi:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+    Value: !Sub "${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+  UserPool:
+    Description: "Cognito User Pool to contain account information."
+    Value: !Ref UserPool
   PlantFunction:
     Description: "Plant Lambda Function ARN"
     Value: !GetAtt PlantFunction.Arn
